@@ -9,7 +9,7 @@ bool isSorted(int arr[],int n){
 }
 int main(){
     int n=6;
-    int arr[6]={20,30,40,50,60,500};
+    int arr[6]={20,30,40,50,600,500};
     cout<<isSorted(arr,n);
 }
 
