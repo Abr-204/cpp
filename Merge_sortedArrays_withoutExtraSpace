@@ -1,0 +1,124 @@
+//brute-force
+#include<iostream>
+using namespace std;
+void merge(int nums1[], int m, int nums2[], int n) {
+        int nums3[m+n];
+        int l=0,r=0,i=0;
+        while(l<m && r<n){
+            if(nums1[l]<=nums2[r]){
+                nums3[i]=nums1[l];
+                l++;i++;
+            }
+            else{
+                nums3[i]=nums2[r];
+                r++;i++;
+            }
+        }
+        while(l<m){
+            nums3[i]=nums1[l];
+            l++;i++;
+        }
+        while(r<n){
+            nums3[i]=nums2[r];
+                r++;i++;
+        }
+        for(int i=0;i<m+n;i++){
+            if(i<m){
+                nums1[i]=nums3[i];
+            }
+            else{
+                nums2[i-m]=nums3[i];
+            }
+        }
+}
+int main(){
+    int nums1[] = {1, 4, 8, 10};
+    int nums2[] = {2, 3, 9};
+    int n = 3, m = 4;
+    merge(nums1,m,nums2,n);
+    for (int i = 0; i < m; i++) {
+        cout << nums1[i] << " ";
+    }
+    cout<<endl;
+    for (int i = 0; i < n; i++) {
+        cout << nums2[i] << " ";
+    }
+}
+
+//optimal-1
+#include<iostream>
+#include<algorithm>
+using namespace std;
+void merge(int nums1[], int m, int nums2[], int n) {
+        int l=m-1,r=0;
+        while(l>=0 && r<n){
+            if(nums1[l]>nums2[r]){
+                swap(nums1[l],nums2[r]);
+                l--,r++;
+            }
+            else{
+                break;
+            }
+        }
+        sort(nums1,nums1+m);
+        sort(nums2,nums2+n);
+}
+int main(){
+    int nums1[] = {1, 4, 8, 10};
+    int nums2[] = {2, 3, 9};
+    int n = 3, m = 4;
+    merge(nums1,m,nums2,n);
+    for (int i = 0; i < m; i++) {
+        cout << nums1[i] << " ";
+    }
+    cout<<endl;
+    for (int i = 0; i < n; i++) {
+        cout << nums2[i] << " ";
+    }
+}
+
+//optimal-2
+#include<iostream>
+#include<algorithm>
+using namespace std;
+void swapGreater(int nums1[], int index1,int nums2[], int index2){
+        if(nums1[index1]>nums2[index2]){
+            swap(nums1[index1],nums2[index2]);
+        }
+}
+void merge(int nums1[], int m, int nums2[], int n) {
+        int len=m+n;
+        int gap=(len+1)/2;
+        while(gap>0){
+            int l=0;
+            int r=l+gap;
+            while(r<len){
+                if(l<m && r>=m){
+                    swapGreater(nums1,m,nums2,r-m);
+                }
+                else if(l>=m){
+                    swapGreater(nums2,l-m,nums2,r-m);
+                }
+                else{
+                    swapGreater(nums1,l,nums1,r);
+                }
+                l++;r++;
+            }
+            if(gap==1) break;
+            gap=(gap+1)/2;
+        }
+}
+int main(){
+    int nums1[] = {1, 4, 8, 10};
+    int nums2[] = {2, 3, 9};
+    int n = 3, m = 4;
+    merge(nums1,m,nums2,n);
+    for (int i = 0; i < m; i++) {
+        cout << nums1[i] << " ";
+    }
+    cout<<endl;
+    for (int i = 0; i < n; i++) {
+        cout << nums2[i] << " ";
+    }
+}
+
